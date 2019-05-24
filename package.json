@@ -1,31 +1,24 @@
 {
-    "name": "cordova-plugin-yzjmessage",
-    "version": "1.0.0",
-    "description": "an ios yzjmessage which can send message",
-    "cordova": {
-        "id": "cordova-plugin-yzjmessage",
-        "platforms": [
-            "ios"
-        ]
-    },
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/xuxueyong/cordova-plugin-yzjmessage.git"
-    },
-    "keywords": [
-        "ios",
-        "message",
-        "cordova",
-        "automatically"
-    ],
-    "author": "xuxueyong",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/xuxueyong/cordova-plugin-yzjmessage/issues"
-    },
-    "homepage": "https://github.com/xuxueyong/cordova-plugin-yzjmessage/blob/master/README.md"
+  "name": "package",
+  "version": "0.1.0",
+  "description": "message cordova pulgin",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xuxueyong/cordova-plugin-yzjmessage.git"
+  },
+  "keywords": [
+    "message",
+    "cordova",
+    "Object-C"
+  ],
+  "author": "xuxueyong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xuxueyong/cordova-plugin-yzjmessage/issues"
+  },
+  "homepage": "https://github.com/xuxueyong/cordova-plugin-yzjmessage#readme"
 }
