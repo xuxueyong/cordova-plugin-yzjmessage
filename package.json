@@ -1,6 +1,6 @@
 {
     "name": "cordova-plugin-yzjmessage",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "description": "an ios yzjmessage which can send message",
     "cordova": {
         "id": "cordova-plugin-yzjmessage",
