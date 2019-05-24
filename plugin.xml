@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-yzjmessage" version="0.1.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>cordova-plugin-yzjmessage</name>
+    <js-module name="yzjmessage" src="www/yzjmessage.js">
+        <clobbers target="cordova.plugins.yzjmessage" />
+    </js-module>
+    
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="CDVYZJMessage">
+                <param name="ios-package" value="CDVYZJMessage"/>
+            </feature>
+        </config-file>
+        <header-file src="src/ios/CDVYZJMessage.h" />
+        <source-file src="src/ios/CDVYZJMessage.m" />
+    </platform>
+</plugin>
