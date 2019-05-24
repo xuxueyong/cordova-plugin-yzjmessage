@@ -2,7 +2,12 @@
   "name": "cordova-plugin-yzjmessage",
   "version": "0.1.0",
   "description": "message cordova pulgin",
-  "main": "index.js",
+  "cordova": {
+      "id": "cordova-plugin-yzjmessage",
+      "platforms": [
+          "ios"
+      ]
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
