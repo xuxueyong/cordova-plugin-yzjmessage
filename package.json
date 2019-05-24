@@ -1,5 +1,5 @@
 {
-  "name": "package",
+  "name": "cordova-plugin-yzjmessage",
   "version": "0.1.0",
   "description": "message cordova pulgin",
   "main": "index.js",
