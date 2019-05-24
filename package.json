@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-yzjmessage",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "description": "message cordova pulgin",
   "cordova": {
       "id": "cordova-plugin-yzjmessage",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xuxueyong/cordova-plugin-yzjmessage.git"
+    "url": "git@github.com:xuxueyong/cordova-plugin-yzjmessage.git"
   },
   "keywords": [
     "message",
