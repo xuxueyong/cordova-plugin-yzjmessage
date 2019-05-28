@@ -12,6 +12,7 @@
             </feature>
         </config-file>
         <header-file src="src/ios/CDVYZJMessage.h" />
-        <source-file src="src/ios/CDVYZJMessage.m" />
+        <source-file src="src/ios/CDVYZJMessage.mm" />
+        <header-file src="src/ios/YZJMessageSDKManager.h" />
     </platform>
 </plugin>
