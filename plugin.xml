@@ -11,8 +11,49 @@
                 <param name="ios-package" value="CDVYZJMessage"/>
             </feature>
         </config-file>
+        
+        <config-file target="*-Info.plist" parent="NSMicrophoneUsageDescription">
+            <string>云之家需要访问你的麦克风，否则你将不能正常使用语音会议、语音消息等功能。</string>
+        </config-file>
+        <config-file target="*-Info.plist" parent="NSPhotoLibraryUsageDescription">
+            <string>云之家需要访问你的相册，否则你将无法在日常沟通中使用系统相册里的照片和视频。</string>
+        </config-file>
+        <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
+            <string>云之家需要访问你的相机，否则你将不能正常使用拍照、扫一扫、视频会议等功能。</string>
+        </config-file>
+        <config-file target="*-Info.plist" parent="NSContactsUsageDescription">
+            <string>云之家为你创造更好的沟通体验，帮助你及时关注好友职场动态。</string>
+        </config-file>
+        
+        <!-- 代码文件 -->
         <header-file src="src/ios/CDVYZJMessage.h" />
         <source-file src="src/ios/CDVYZJMessage.mm" />
         <header-file src="src/ios/YZJMessageSDKManager.h" />
+        <source-file src="src/ios/YZJMessageSDK" framework="true" />
+        
+        <!-- Other required frameworks -->
+        <framework src="libz.tbd" />
+        <framework src="libsqlite3.0.tbd" />
+        <framework src="CoreTelephony.framework" />
+        <framework src="SystemConfiguration.framework" />
+        <framework src="Security.framework" />
+        <framework src="CFNetwork.framework" />
+        <framework src="libc++.1.tbd" />
+        
+        <!-- Other required tbd -->
+        <framework src="libz.tbd" />
+        <framework src="libsqlite3.0.tbd" />
+        <framework src="CoreTelephony.framework" />
+        <framework src="SystemConfiguration.framework" />
+        <framework src="Security.framework" />
+        <framework src="CFNetwork.framework" />
+        <framework src="libc++.1.tbd" />
+        
+        <!-- 依赖的公共库 -->
+        <pods-config ios-min-version="9.0" use-frameworks="true">
+            <source url="https://github.com/CocoaPods/Specs.git"/>
+        </pods-config>
+        <pod name="JSONKit" version="1.0.0" />
+        
     </platform>
 </plugin>
