@@ -68,7 +68,7 @@
         <framework src="CoreMedia.framework" />
         <framework src="CoreMIDI.framework" />
         <framework src="CoreML.framework" />
-        <framework src="CoreServices.framework" />
+<!--        <framework src="CoreServices.framework" />-->
         <framework src="CoreMotion.framework" />
         <framework src="CoreSpotlight.framework" />
         <framework src="EventKitUI.framework" />
