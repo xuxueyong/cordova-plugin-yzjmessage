@@ -55,7 +55,7 @@
         <framework src="AssetsLibrary.framework" />
         <framework src="BusinessChat.framework" />
 <!--         <framework src="AuthenticationServices.framework" />-->
-        <framework src="CarPlay.framework" />
+<!--        <framework src="CarPlay.framework" />-->
         <framework src="CFNetwork.framework" />
         <framework src="ClassKit.framework" />
         <framework src="ContactsUI.framework" />
