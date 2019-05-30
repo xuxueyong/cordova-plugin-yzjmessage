@@ -85,7 +85,7 @@
         <framework src="HomeKit.framework" />
         <framework src="iAd.framework" />
         <framework src="IdentityLookup.framework" />
-        <framework src="IdentityLookupUI.framework" />
+<!--        <framework src="IdentityLookupUI.framework" />-->
         <framework src="ImageIO.framework" />
         <framework src="Intents.framework" />
         <framework src="IntentsUI.framework" />
