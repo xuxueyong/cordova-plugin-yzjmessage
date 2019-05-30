@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-yzjmessage",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "message cordova pulgin",
   "cordova": {
       "id": "cordova-plugin-yzjmessage",
