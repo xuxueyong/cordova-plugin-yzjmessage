@@ -105,7 +105,7 @@
         <framework src="MobileCoreServices.framework" />
         <framework src="MultipeerConnectivity.framework" />
 <!--        <framework src="NaturalLanguage.framework" />-->
-        <framework src="Network.framework" />
+<!--        <framework src="Network.framework" />-->
         <framework src="NetworkExtension.framework" />
         <framework src="NewsstandKit.framework" />
         <framework src="NotificationCenter.framework" />
