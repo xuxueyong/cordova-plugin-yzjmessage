@@ -168,8 +168,8 @@
                 <pod name="RxCocoa" spec="4.1.2" />
                 <pod name="RxDataSources" spec="3.0.2" />
                 <pod name="PromiseKit/CorePromise" spec="6.4.0" />
-                <pod name="KDMerc" spec="0.1.1" />
-                <pod name="KDOpenCoreAmr" spec="0.1.2" />
+                <pod name="KDMerc" git="https://github.com/yzjmobile/KDMerc.git" tag="0.1.1" />
+                <pod name="KDOpenCoreAmr" git="https://github.com/yzjmobile/KDOpenCoreAmr.git" tag="0.1.2" />
             </pods>
         </podspec>
         
