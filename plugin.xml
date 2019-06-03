@@ -28,9 +28,9 @@
         <!-- 代码文件 -->
         <header-file src="src/ios/CDVYZJMessage.h" />
         <source-file src="src/ios/CDVYZJMessage.mm" />
-        <header-file src="src/ios/YZJMessageSDKManager.h" />
-        <source-file src="src/ios/YZJMessageSDK" framework="true" />
-        
+<!--        <header-file src="src/ios/YZJMessageSDKManager.h" />-->
+<!--        <source-file src="src/ios/YZJMessageSDK" framework="true" />-->
+
         <!-- Other required frameworks -->
         <framework src="UIKit.framework" />
         <framework src="Foundation.framework" />
@@ -170,6 +170,7 @@
                 <pod name="PromiseKit/CorePromise" spec="6.4.0" />
                 <pod name="KDMerc" git="https://github.com/yzjmobile/KDMerc.git" tag="0.1.1" />
                 <pod name="KDOpenCoreAmr" git="https://github.com/yzjmobile/KDOpenCoreAmr.git" tag="0.1.2" />
+                <pod name="YZJMessageSDK" git="https://github.com/yzjmobile/YZJMessageSDK.git" tag="0.1.1" />
             </pods>
         </podspec>
         

@@ -4,6 +4,7 @@
 
 #import "CDVYZJMessage.h"
 #import "YZJMessageSDKManager.h"
+#import <YZJMessageSDKManager/YZJMessageSDKManager.h>
 
 @implementation CDVYZJMessage
 
