@@ -133,6 +133,7 @@
         <framework src="WatchConnectivity.framework" />
         <framework src="WatchKit.framework" />
         <framework src="WebKit.framework" />
+        <framework src="ExternalAccessory.framework" />
         
         <!-- Other required tbd -->
         <framework src="libz.tbd" />
