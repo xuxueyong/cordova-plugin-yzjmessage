@@ -141,38 +141,5 @@
         <framework src="libresolv.9.tbd" />
         <framework src="libc++.tbd" />
         
-        <!-- 依赖的公共库 -->
-        <podspec>
-            <config>
-                    <!-- 可以添加自定义索引库 -->
-                <source url="https://github.com/CocoaPods/Specs.git"/>
-            </config>
-            <pods use-frameworks="true" inhibit-all-warnings="true">
-                <pod name="AFNetworking" spec="3.1.0" />
-                <pod name="JSONModel" spec="1.7.0" />
-                <pod name="Masonry" spec="1.1.0" />
-                <pod name="SnapKit" spec="4.0.0" />
-                <pod name="MenuItemKit" spec="3.0.0" />
-                <pod name="lottie-ios" spec="2.1.5" />
-                <pod name="pop" spec="1.0.10" />
-                <pod name="MBProgressHUD" spec="1.1.0" />
-                <pod name="DGActivityIndicatorView" spec="2.1.1" />
-                <pod name="DACircularProgress" spec="2.3.1" />
-                <pod name="SHSPhoneComponent" spec="2.31" />
-                <pod name="SDWebImage" spec="4.1.2" />
-                <pod name="SDWebImage/GIF" />
-                <pod name="AMapLocation" spec="2.6.1" />
-                <pod name="FMDB" spec="2.6.2" />
-                <pod name="SafeKit" spec="1.4.1" />
-                <pod name="WCDB.swift" spec="1.0.7" />
-                <pod name="RxSwift" spec="4.1.2" />
-                <pod name="RxCocoa" spec="4.1.2" />
-                <pod name="RxDataSources" spec="3.0.2" />
-                <pod name="PromiseKit/CorePromise" spec="6.4.0" />
-                <pod name="KDMerc" git="https://github.com/yzjmobile/KDMerc.git" tag="0.1.1" />
-                <pod name="KDOpenCoreAmr" git="https://github.com/yzjmobile/KDOpenCoreAmr.git" tag="0.1.2" />
-            </pods>
-        </podspec>
-        
     </platform>
 </plugin>
