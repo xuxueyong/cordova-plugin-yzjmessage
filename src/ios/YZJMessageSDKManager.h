@@ -38,6 +38,8 @@ NS_ASSUME_NONNULL_BEGIN
 //@property (nonatomic, strong, nonnull) NSString *openToken;
 //@property (nonatomic, strong, nonnull) NSString *userAgent;
 //@property (nonatomic, strong, nonnull) NSString *clientId;
+@property (nonatomic, strong, nonnull) NSString *password;
+
 @end
 
 //typedef void(^YZJTimelineBlock)(void);
@@ -97,7 +99,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,assign) int flag;
 
 // 获取 token
-- (NSMutableDictionary *)getTokenByUserName:(NSString *)userName;
+- (NSMutableDictionary *)getTokenByUserName:(NSString *)userName password:(NSString *)password;
+// 双人聊天
+- (void)openPersonChat:(NSString *)personNo;
 
 /**
  * 分享文字接口
