@@ -38,7 +38,6 @@ NS_ASSUME_NONNULL_BEGIN
 //@property (nonatomic, strong, nonnull) NSString *openToken;
 //@property (nonatomic, strong, nonnull) NSString *userAgent;
 //@property (nonatomic, strong, nonnull) NSString *clientId;
-@property (nonatomic, strong, nonnull) NSString *password;
 
 @end
 
