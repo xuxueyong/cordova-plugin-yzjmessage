@@ -6,16 +6,23 @@
 #import "YZJMessageSDKManager.h"
 #import "YZJLoginManager.h"
 
+@interface CDVYZJMessage ()
+{
+    // 发起聊天的员工号；
+    NSString *_otherPersonNo;
+}
+
+@end
+
 @implementation CDVYZJMessage
 
-// 获取token， 和 userID， 使用参数 员工工号
+// 获取token， 和 userID， 使用参数 员工工号, 密码
 - (void)getToken:(CDVInvokedUrlCommand*)command {
     NSLog(@"开始获取token");
     
     YZJMessageSDKManager *login = [YZJMessageSDKManager shared];
-//    username = @"a0018442";
-//    password = @"Kingdee.1234";
-    NSDictionary *dic = [login getTokenByUserName:command.arguments[0] password: command.arguments[1]];
+    NSDictionary *dic = [login getTokenByUserName:@"a0018442" password: @"Kingdee.1234"];
+//    NSDictionary *dic = [login getTokenByUserName:command.arguments[0] password: command.arguments[1]];
     CDVPluginResult* pluginResult = nil;
     NSString *result = nil;
     if([[dic objectForKey:@"message"] isEqualToString:@"error"]){
@@ -24,32 +31,10 @@
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:result];
 
     } else {
-        result= [NSString stringWithFormat:@"%@,%@",[dic objectForKey:@"token"],[dic objectForKey:@"userID"]] ;
+        result= [NSString stringWithFormat:@"%@,%@",[dic objectForKey:@"token"],[dic objectForKey:@"userID"]];
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:result];
     }
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-}
-
-- (UIViewController *)getCurrentVC {
-    UIViewController *result = nil;
-    UIWindow * window = [[UIApplication sharedApplication] keyWindow];
-    if (window.windowLevel != UIWindowLevelNormal) {
-        NSArray *windows = [[UIApplication sharedApplication] windows];
-        for(UIWindow * tmpWin in windows) {
-            if (tmpWin.windowLevel == UIWindowLevelNormal) {
-                window = tmpWin;
-                break;
-            }
-        }
-    }
-    UIView *frontView = [[window subviews] objectAtIndex:0];
-    id nextResponder = [frontView nextResponder];
-    if ([nextResponder isKindOfClass:[UIViewController class]]) {
-        result = nextResponder;
-    } else {
-        result = window.rootViewController;
-    }
-    return result;
 }
 
 - (void)logingSuccessGetToken:(NSNotification *)info {
@@ -63,8 +48,55 @@
     [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireDocumentEvent('getTokenSuccess',%@)",jsonString]];
 }
 
-// 会话列表、分享
-- (void)getExtra:(CDVInvokedUrlCommand*)command
+// 会话列表
+- (void)openMessageListView:(CDVInvokedUrlCommand*)command {
+    YZJMessageSDKManager *login = [YZJMessageSDKManager shared];
+    NSDictionary *dic = [login getTokenByUserName:@"a0018442" password: @"Kingdee.1234"];
+//    NSDictionary *dic = [login getTokenByUserName:command.arguments[0] password: command.arguments[1]];
+    if([[dic objectForKey:@"message"] isEqualToString:@"error"]){
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logingSuccessOpenMessageListView:) name:@"yzjmessage_login_result" object:nil];
+    } else {
+        [self openMessageListVC];
+    }
+}
+
+- (void)logingSuccessOpenMessageListView:(NSNotification *)info {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"yzjmessage_login_result" object:nil];
+    NSDictionary *dict = info.userInfo;
+    if ([dict[@"message"] isEqualToString:@"success"]) {
+        [self openMessageListVC];
+        [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('LoginSuccess')"];
+    }
+}
+
+- (void)openMessageListVC {
+    UINavigationController *nav = [[YZJMessageSDKManager shared] timelineNavVC];
+    [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:nav animated:YES completion:nil];
+}
+
+// 两人会话聊天
+- (void)openPersonMessageView:(CDVInvokedUrlCommand*)command {
+    _otherPersonNo = command.arguments[1];
+    
+    YZJMessageSDKManager *login = [YZJMessageSDKManager shared];
+    NSDictionary *dic = [login getTokenByUserName:@"a0018442" password: @"Kingdee.1234"];
+    //    NSDictionary *dic = [login getTokenByUserName:command.arguments[0] password: command.arguments[1]];
+    if([[dic objectForKey:@"message"] isEqualToString:@"error"]){
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logingSuccessOpenPersonMessageView:) name:@"yzjmessage_login_result" object:nil];
+    } else {
+        YZJMessageSDKManager *login = [YZJMessageSDKManager shared];
+//        [login openPersonChat:command.arguments[2]];
+        [login openPersonChat:@"a0018442"];
+    }
+}
+
+- (void)logingSuccessOpenPersonMessageView:(NSNotification *)info {
+    YZJMessageSDKManager *login = [YZJMessageSDKManager shared];
+    [login openPersonChat:_otherPersonNo];
+}
+
+// 分享
+- (void)shareMessageToSDK:(CDVInvokedUrlCommand*)command
 {
     NSDictionary *tempdic;
     if (command.arguments.count>=3) {
