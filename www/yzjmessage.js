@@ -27,6 +27,11 @@ exports.getUnreadCount = function(success, error, userName) {
     exec(success, error, "CDVYZJMessage", "getUnreadCount" , userName);
 };
                
+// 打开推送消息
+exports.openMessageByGroupID = function(success, error, userName) {
+    exec(success, error, "CDVYZJMessage", "openMessageByGroupID" , userName);
+};
+               
 // 退出登录
 exports.messageLogout = function(success, error, userName) {
     exec(success, error, "CDVYZJMessage", "messageLogout" , userName);

@@ -182,6 +182,11 @@
     [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireDocumentEvent('getUnreadCountSuccess',%@)",jsonString]];
 }
 
+// 打开推送消息
+- (void)openMessageByGroupID:(CDVInvokedUrlCommand*)command {
+    [[YZJMessageSDKManager shared] openMsgWithGroupId:command.arguments[2]];
+}
+
 #pragma mark - 初始化域名配置
 - (void)setup {
     YZJMessageSDKConfig *config = [[YZJMessageSDKConfig alloc] init];
