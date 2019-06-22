@@ -35,11 +35,9 @@
         
         <!-- 代码文件 -->
         <header-file src="src/ios/CDVYZJMessage.h" />
-        <header-file src="src/ios/YZJLoginManager.h" />
         <source-file src="src/ios/CDVYZJMessage.mm" />
         <header-file src="src/ios/YZJMessageSDKManager.h" />
         <source-file src="src/ios/YZJMessageSDK" framework="true" />
-
         
         <!-- Other required frameworks -->
         <framework src="UIKit.framework" />

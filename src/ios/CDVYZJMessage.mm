@@ -1,15 +1,20 @@
 /*
  *  暴露给js调用的方法
-*/
+ */
 
 #import "CDVYZJMessage.h"
 #import "YZJMessageSDKManager.h"
-#import "YZJLoginManager.h"
 
-@interface CDVYZJMessage ()
+@interface CDVYZJMessage () <YZJMessageSDKManagerDelegate>
 {
-    // 发起聊天的员工号；
+    // 是否第一次调用
+    BOOL _isFirstLaunch;
+    // 发起聊天的员工号
     NSString *_otherPersonNo;
+    // 未读消息数
+    NSString *_unreadCount;
+    // 推送deviceToken
+    NSString *_deviceTokenStr;
 }
 
 @end
@@ -20,16 +25,24 @@
 - (void)getToken:(CDVInvokedUrlCommand*)command {
     NSLog(@"开始获取token");
     
+    // 初始化只做一次
+    if (!_isFirstLaunch) {
+        [self setup];
+        _isFirstLaunch = YES;
+    }
+    
+    _deviceTokenStr = command.arguments[2];
+    
     YZJMessageSDKManager *login = [YZJMessageSDKManager shared];
     NSDictionary *dic = [login getTokenByUserName:@"a0018442" password: @"Kingdee.1234"];
-//    NSDictionary *dic = [login getTokenByUserName:command.arguments[0] password: command.arguments[1]];
+    //    NSDictionary *dic = [login getTokenByUserName:command.arguments[0] password: command.arguments[1]];
     CDVPluginResult* pluginResult = nil;
     NSString *result = nil;
     if([[dic objectForKey:@"message"] isEqualToString:@"error"]){
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logingSuccessGetToken:) name:@"yzjmessage_login_result" object:nil];
         result=@"errror";
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:result];
-
+        
     } else {
         result= [NSString stringWithFormat:@"%@,%@",[dic objectForKey:@"token"],[dic objectForKey:@"userID"]];
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:result];
@@ -45,6 +58,10 @@
     NSString *jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
     NSLog(@"返回的token字典信息：----%@",info);
     
+    // 上传deviceToken, 用于推送
+    NSData *data = [_deviceTokenStr dataUsingEncoding:NSUTF8StringEncoding];
+    [[YZJMessageSDKManager  shared] registerDeviceToken:data];
+    
     [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireDocumentEvent('getTokenSuccess',%@)",jsonString]];
 }
 
@@ -52,7 +69,7 @@
 - (void)openMessageListView:(CDVInvokedUrlCommand*)command {
     YZJMessageSDKManager *login = [YZJMessageSDKManager shared];
     NSDictionary *dic = [login getTokenByUserName:@"a0018442" password: @"Kingdee.1234"];
-//    NSDictionary *dic = [login getTokenByUserName:command.arguments[0] password: command.arguments[1]];
+    //    NSDictionary *dic = [login getTokenByUserName:command.arguments[0] password: command.arguments[1]];
     if([[dic objectForKey:@"message"] isEqualToString:@"error"]){
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logingSuccessOpenMessageListView:) name:@"yzjmessage_login_result" object:nil];
     } else {
@@ -85,7 +102,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logingSuccessOpenPersonMessageView:) name:@"yzjmessage_login_result" object:nil];
     } else {
         YZJMessageSDKManager *login = [YZJMessageSDKManager shared];
-//        [login openPersonChat:command.arguments[2]];
+        //        [login openPersonChat:command.arguments[2]];
         [login openPersonChat:@"a0018442"];
     }
 }
@@ -154,5 +171,50 @@
     }
 }
 
+// 获取未读消息数
+- (void)getUnreadCount:(CDVInvokedUrlCommand*)command {
+    NSDictionary *dict = @{@"unreadCount": _unreadCount};
+    NSError *error;
+    NSData *jsonData   = [NSJSONSerialization dataWithJSONObject:dict options:0 error:&error];
+    NSString *jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
+    NSLog(@"未读消息数：----%@",dict);
+    
+    [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireDocumentEvent('getUnreadCountSuccess',%@)",jsonString]];
+}
+
+#pragma mark - 初始化域名配置
+- (void)setup {
+    YZJMessageSDKConfig *config = [[YZJMessageSDKConfig alloc] init];
+    
+    config.baserUrl = @"https://i.haier.net";
+    config.baserImgUrl = @"https://i.haier.net/";
+    
+    config.pubKey = @"-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDG2wgfTaiRBjI9Js4x3e9rOmKW\nCr8ScNnuzrkj7AnJb7JzS8NPgWnqSVFRLrXQrgofj3fARcEWXrcSC638k9EVgdWG\njPtloPenThEFMSN/Lh2wxH3jBF8N2T/vvGl3O19Dz1pxrwCgr8zq7u5mJaiouLYT\nIgta84Bf3mcCErb7cQIDAQAB\n-----END PUBLIC KEY-----";
+    config.longLinkAddress = @"i.haier.net";
+    config.longLinkPort = 20080;
+    config.shortLinkAddress = @"i.haier.net";
+    config.shortLinkPort = 20443;
+    
+    [[YZJMessageSDKManager shared] setupWithConfig:config delegate:self];
+}
+
+#pragma mark - YZJMessageSDKManagerDelegate
+
+- (void)onGroupListLeftIconTap {
+    UIViewController *vc = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UIViewController *presentVC = vc.presentedViewController;
+    [presentVC dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)unreadCountChanged:(NSUInteger)unreadCount {
+    _unreadCount = [NSString stringWithFormat:@"%ld", unreadCount];
+}
+
+#pragma mark - 退出登录
+- (void)messageLogout:(CDVInvokedUrlCommand*)command {
+    [[YZJMessageSDKManager shared] logout];
+}
+
 @end
+
 

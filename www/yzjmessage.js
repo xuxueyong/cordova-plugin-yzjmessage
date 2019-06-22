@@ -21,6 +21,16 @@ exports.openPersonMessageView = function(success, error,codes) {
 exports.shareMessageToSDK = function(success, error, userName) {
     exec(success, error, "CDVYZJMessage", "shareMessageToSDK" , userName);
 };
+               
+// 消息未读数
+exports.getUnreadCount = function(success, error, userName) {
+    exec(success, error, "CDVYZJMessage", "getUnreadCount" , userName);
+};
+               
+// 退出登录
+exports.messageLogout = function(success, error, userName) {
+    exec(success, error, "CDVYZJMessage", "messageLogout" , userName);
+};
 
 exports.allowPermission = function(success, error,codes) {
     exec(success, error, "CDVYZJMessage", "allowPermission",codes);

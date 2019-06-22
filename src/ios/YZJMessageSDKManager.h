@@ -39,6 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 //@property (nonatomic, strong, nonnull) NSString *userAgent;
 //@property (nonatomic, strong, nonnull) NSString *clientId;
 
+//标记是客户端还是员工端
+@property(nonatomic,assign) int flag;
 @end
 
 //typedef void(^YZJTimelineBlock)(void);
@@ -90,17 +92,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (UINavigationController *)timelineNavVC;
 
 /// 收到推送后 打开推送消息
-//- (void)openMsgWithMsgId:(NSString *)msgId;
-
-/// ==== 兼容旧版本sdk api ====
-
-//标记是客户端还是员工端
-@property(nonatomic,assign) int flag;
+- (void)openMsgWithGroupId:(NSString *)groupId;
 
 // 获取 token
 - (NSMutableDictionary *)getTokenByUserName:(NSString *)userName password:(NSString *)password;
 // 双人聊天
 - (void)openPersonChat:(NSString *)personNo;
+
+/// 上传 devieceToke
+- (void)registerDeviceToken:(NSData *)tokenData;
 
 /**
  * 分享文字接口
@@ -140,6 +140,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)shareToChatWithFileData:(NSData *)fileData
                 addressbookType:(NSString *)addressbookType
                  viewController:(UIViewController *)viewController ;
+
+// 推送
+- (void)registerRemoteNotifaction;
 
 @end
 
