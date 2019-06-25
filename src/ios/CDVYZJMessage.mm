@@ -115,64 +115,28 @@
 // 分享
 - (void)shareMessageToSDK:(CDVInvokedUrlCommand*)command
 {
-    NSDictionary *tempdic;
-    if (command.arguments.count>=3) {
-        if ([command.arguments[2] rangeOfString:@"shareText"].location != NSNotFound) {
-            NSMutableArray *arry = [[NSMutableArray alloc]init];
-            [arry addObject:command.arguments[0]];
-            tempdic = @{@"key":arry,@"shareText":command.arguments[1],@"addressbooktype":command.arguments[2]};
-        } else if ([command.arguments[2] rangeOfString:@"sharePicture"].location != NSNotFound){
-            NSMutableArray *arry = [[NSMutableArray alloc]init];
-            [arry addObject:command.arguments[0]];
-            tempdic = @{@"key":arry,@"sharePicture":command.arguments[1],@"addressbooktype":command.arguments[2]};
-        } else if ([command.arguments[2] rangeOfString:@"shareNews"].location != NSNotFound){
-            NSMutableArray *arry = [[NSMutableArray alloc]init];
-            [arry addObject:command.arguments[0]];
-            //  工号，appName，shareNews,标题，内容，图片，网址
-            tempdic = @{@"key":arry,@"shareNews":@"ShareNews",@"appName":command.arguments[1],@"title":command.arguments[3],@"content":command.arguments[4],@"thumhUrl":command.arguments[5],@"pageUrl":command.arguments[6],@"addressbooktype":command.arguments[7]};
-        } else if ([command.arguments[2] rangeOfString:@"jpush"].location != NSNotFound){
-            NSMutableArray *arry = [[NSMutableArray alloc]init];
-            [arry addObject:command.arguments[0]];
-            //  工号，appName，shareNews,标题，内容，图片，网址
-            tempdic = @{@"key":arry,@"mode":@"1",@"groupId":command.arguments[3],@"jpush":@"jpush"};
-        } else {
-            tempdic = @{@"key":command.arguments};
+    if (command.arguments.count == 8) {
+        NSDictionary *tempdic;
+        NSMutableArray *arry = [[NSMutableArray alloc]init];
+        [arry addObject:command.arguments[0]];
+        //  工号，appName，shareNews,标题，内容，图片，网址
+        tempdic = @{@"key":command.arguments[0],@"shareNews":@"ShareNews",@"appName":command.arguments[2],@"title":command.arguments[4],@"content":command.arguments[5],@"thumhUrl":command.arguments[6],@"pageUrl":command.arguments[7],@"addressbooktype":@"预留"};
+        
+        if ([tempdic objectForKey:@"shareNews"] != nil) {
+            YZJMessageSDKManager *manger = [YZJMessageSDKManager shared];
+            UIViewController *presentParentVC = [UIApplication sharedApplication].keyWindow.rootViewController;
+            [manger shareToChatWithTitle:[tempdic objectForKey:@"title"] content:[tempdic objectForKey:@"content"] thumbUrl:[tempdic objectForKey:@"thumhUrl"] webPage:[tempdic objectForKey:@"pageUrl"] appName:[tempdic objectForKey:@"appName"] addressbookType:[tempdic objectForKey:@"addressbooktype"] viewController:presentParentVC];
         }
     } else {
-        tempdic = @{@"key":command.arguments};
-    }
-    
-    // 如果包含分享内容
-    YZJMessageSDKManager *create = [YZJMessageSDKManager shared];
-    UIViewController *presentParentVC = [UIApplication sharedApplication].keyWindow.rootViewController;
-    if ([tempdic objectForKey:@"shareText"] != nil) {
-        [create shareToChatWithText:[tempdic objectForKey:@"shareText"] addressbookType:[tempdic objectForKey:@"addressbooktype"] viewController:presentParentVC];
-        
-    } else if ([tempdic objectForKey:@"sharePicture"] != nil) {
-        [create shareToChatWithThumbnailUrl:[tempdic objectForKey:@"sharePicture"] originURL:[tempdic objectForKey:@"sharePicture"] addressbookType:[tempdic objectForKey:@"addressbooktype"] viewController:presentParentVC];
-        
-    } else if ([tempdic objectForKey:@"shareNews"] != nil) {
-        //工号，appName，shareNews,标题，内容，图片，网址
-        [create shareToChatWithTitle:[tempdic objectForKey:@"title"] content:[tempdic objectForKey:@"content"] thumbUrl:[tempdic objectForKey:@"thumhUrl"] webPage:[tempdic objectForKey:@"pageUrl"] appName:[tempdic objectForKey:@"appName"] addressbookType:[tempdic objectForKey:@"addressbooktype"] viewController:presentParentVC];
-        
-    } else if ([tempdic objectForKey:@"jpush"] != nil) { // 推送
-        
-    } else if (([tempdic objectForKey:@"key"] != nil)) { // 会话列表， 使用员工号参数
-        if (command.arguments.count == 1) { // 1. 列表 1个参数
-            
-            UINavigationController *nav = [[YZJMessageSDKManager shared] timelineNavVC];
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, int64_t (3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:nav animated:YES completion:nil];
-            });
-        } else { // 2. 单个私聊， 2个参数
-            [[YZJMessageSDKManager shared] openPersonChat:@"a0018442"];
-        }
+        NSLog(@"分享传参有误");
     }
 }
 
 // 获取未读消息数
 - (void)getUnreadCount:(CDVInvokedUrlCommand*)command {
+    if (!_unreadCount) {
+        _unreadCount = @"0";
+    }
     NSDictionary *dict = @{@"unreadCount": _unreadCount};
     NSError *error;
     NSData *jsonData   = [NSJSONSerialization dataWithJSONObject:dict options:0 error:&error];

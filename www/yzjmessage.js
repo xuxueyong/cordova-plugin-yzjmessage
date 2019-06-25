@@ -1,4 +1,3 @@
-cordova.define("cordova-plugin-yzjmessage.yzjmessage", function(require, exports, module) {
 
 var exec = require('cordova/exec');
 
@@ -41,4 +40,3 @@ exports.allowPermission = function(success, error,codes) {
     exec(success, error, "CDVYZJMessage", "allowPermission",codes);
 };
 
-});
