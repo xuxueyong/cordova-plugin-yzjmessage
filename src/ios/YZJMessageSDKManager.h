@@ -39,8 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 //@property (nonatomic, strong, nonnull) NSString *userAgent;
 //@property (nonatomic, strong, nonnull) NSString *clientId;
 
-//标记是客户端还是员工端
-@property(nonatomic,assign) int flag;
+//标记 YES是员工端 NO是客户端
+@property(nonatomic,assign) BOOL flag;
 @end
 
 //typedef void(^YZJTimelineBlock)(void);
@@ -99,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
 // 双人聊天
 - (void)openPersonChat:(NSString *)personNo;
 
-/// 上传 devieceToke
+/// 上传 devieceToke flag 标记 YES 为员工端和 NO为客户端
 - (void)registerDeviceToken:(NSData *)tokenData;
 
 /**

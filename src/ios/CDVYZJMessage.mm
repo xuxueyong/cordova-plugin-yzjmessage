@@ -31,11 +31,11 @@
         _isFirstLaunch = YES;
     }
     
-    _deviceTokenStr = command.arguments[2];
+//    _deviceTokenStr = command.arguments[2];
     
     YZJMessageSDKManager *login = [YZJMessageSDKManager shared];
-    NSDictionary *dic = [login getTokenByUserName:@"A0015867" password: @"Kingdee123"];
-    //    NSDictionary *dic = [login getTokenByUserName:command.arguments[0] password: command.arguments[1]];
+//  NSDictionary *dic = [login getTokenByUserName:@"A0015867" password: @"Kingdee123"];
+    NSDictionary *dic = [login getTokenByUserName:command.arguments[0] password: command.arguments[1]];
     CDVPluginResult* pluginResult = nil;
     NSString *result = nil;
     if([[dic objectForKey:@"message"] isEqualToString:@"error"]){
@@ -69,8 +69,8 @@
 // 会话列表
 - (void)openMessageListView:(CDVInvokedUrlCommand*)command {
     YZJMessageSDKManager *login = [YZJMessageSDKManager shared];
-    NSDictionary *dic = [login getTokenByUserName:@"A0015867" password: @"Kingdee123"];
-    //    NSDictionary *dic = [login getTokenByUserName:command.arguments[0] password: command.arguments[1]];
+//    NSDictionary *dic = [login getTokenByUserName:@"A0015867" password: @"Kingdee123"];
+    NSDictionary *dic = [login getTokenByUserName:command.arguments[0] password: command.arguments[1]];
     if([[dic objectForKey:@"message"] isEqualToString:@"error"]){
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logingSuccessOpenMessageListView:) name:@"yzjmessage_login_result" object:nil];
     } else {
@@ -101,14 +101,14 @@
     _otherPersonNo = command.arguments[1];
     
     YZJMessageSDKManager *login = [YZJMessageSDKManager shared];
-    NSDictionary *dic = [login getTokenByUserName:@"A0015867" password: @"Kingdee123"];
-    //    NSDictionary *dic = [login getTokenByUserName:command.arguments[0] password: command.arguments[1]];
+//    NSDictionary *dic = [login getTokenByUserName:@"A0015867" password: @"Kingdee123"];
+    NSDictionary *dic = [login getTokenByUserName:command.arguments[0] password: command.arguments[1]];
     if([[dic objectForKey:@"message"] isEqualToString:@"error"]){
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logingSuccessOpenPersonMessageView:) name:@"yzjmessage_login_result" object:nil];
     } else {
         YZJMessageSDKManager *login = [YZJMessageSDKManager shared];
-        //        [login openPersonChat:command.arguments[2]];
-        [login openPersonChat:@"a0018442"];
+        [login openPersonChat:command.arguments[2]];
+//        [login openPersonChat:@"a0018442"];
     }
 }
 
@@ -168,6 +168,7 @@
     config.longLinkPort = 20080;
     config.shortLinkAddress = @"i.haier.net";
     config.shortLinkPort = 20443;
+    config.flag = YES;
     
     [[YZJMessageSDKManager shared] setupWithConfig:config delegate:self];
 }
