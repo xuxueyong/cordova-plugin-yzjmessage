@@ -178,6 +178,7 @@
 - (void)onGroupListLeftIconTap {
     UIViewController *presentVC = self.viewController.presentedViewController;
     [presentVC dismissViewControllerAnimated:YES completion:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('sdkmethod')"];
 }
 
 - (void)unreadCountChanged:(NSUInteger)unreadCount {
