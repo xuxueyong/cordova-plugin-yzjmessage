@@ -13,25 +13,20 @@
     NSString *_otherPersonNo;
     // 未读消息数
     NSString *_unreadCount;
-    // 推送deviceToken
-    NSString *_deviceTokenStr;
 }
 
 @end
 
 @implementation CDVYZJMessage
 
-// 获取token， 和 userID， 使用参数 员工工号, 密码
+/// 首次登陆 获取token， 和 userID， 使用参数 员工工号, 密码
 - (void)getToken:(CDVInvokedUrlCommand*)command {
-    NSLog(@"开始获取token");
-    
     // 初始化只做一次
-    if (!_isFirstLaunch) {
+//    if (!_isFirstLaunch) {
         [self setup];
-        _isFirstLaunch = YES;
-    }
-    
-//    _deviceTokenStr = command.arguments[2];
+//        _isFirstLaunch = YES;
+//    }
+//    return;
     
     YZJMessageSDKManager *login = [YZJMessageSDKManager shared];
 //  NSDictionary *dic = [login getTokenByUserName:@"A0015867" password: @"Kingdee123"];
@@ -56,17 +51,16 @@
     NSError *error;
     NSData *jsonData   = [NSJSONSerialization dataWithJSONObject:dict options:0 error:&error];
     NSString *jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
-    NSLog(@"返回的token字典信息：----%@",info);
+    NSLog(@"=== 返回的token字典信息：----%@",info);
     
-    // 上传deviceToken, 用于推送
-//    NSData *data = [_deviceTokenStr dataUsingEncoding:NSUTF8StringEncoding];
     NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:@"devoice_token_key"];
     [[YZJMessageSDKManager  shared] registerDeviceToken:data];
     
     [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireDocumentEvent('getTokenSuccess',%@)",jsonString]];
 }
 
-// 会话列表
+
+/// 会话列表
 - (void)openMessageListView:(CDVInvokedUrlCommand*)command {
     YZJMessageSDKManager *login = [YZJMessageSDKManager shared];
 //    NSDictionary *dic = [login getTokenByUserName:@"A0015867" password: @"Kingdee123"];
@@ -79,6 +73,8 @@
 }
 
 - (void)logingSuccessOpenMessageListView:(NSNotification *)info {
+    NSLog(@"=== 返回的token字典信息：----%@",info);
+
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"yzjmessage_login_result" object:nil];
     NSDictionary *dict = info.userInfo;
     if ([dict[@"message"] isEqualToString:@"success"]) {
@@ -88,7 +84,7 @@
 }
 
 - (void)openMessageListVC {
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         UINavigationController *nav = [[YZJMessageSDKManager shared] timelineNavVC];
         if (!self.viewController.presentedViewController) {
             [self.viewController presentViewController:nav animated:YES completion:nil];
@@ -96,9 +92,10 @@
     });
 }
 
-// 两人会话聊天
+
+/// 两人会话聊天
 - (void)openPersonMessageView:(CDVInvokedUrlCommand*)command {
-    _otherPersonNo = command.arguments[1];
+    _otherPersonNo = [command.arguments[1] lowercaseString];
     
     YZJMessageSDKManager *login = [YZJMessageSDKManager shared];
 //    NSDictionary *dic = [login getTokenByUserName:@"A0015867" password: @"Kingdee123"];
@@ -107,14 +104,17 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logingSuccessOpenPersonMessageView:) name:@"yzjmessage_login_result" object:nil];
     } else {
         YZJMessageSDKManager *login = [YZJMessageSDKManager shared];
-        [login openPersonChat:command.arguments[2]];
-//        [login openPersonChat:@"a0018442"];
+        if (!self.viewController.presentedViewController) {
+            [login openPersonChat:_otherPersonNo];
+        }
     }
 }
 
 - (void)logingSuccessOpenPersonMessageView:(NSNotification *)info {
     YZJMessageSDKManager *login = [YZJMessageSDKManager shared];
-    [login openPersonChat:_otherPersonNo];
+    if (!self.viewController.presentedViewController) {
+        [login openPersonChat:_otherPersonNo];
+    }
 }
 
 // 分享
@@ -168,7 +168,7 @@
     config.longLinkPort = 20080;
     config.shortLinkAddress = @"i.haier.net";
     config.shortLinkPort = 20443;
-    config.flag = YES;
+    config.flag = NO;
     
     [[YZJMessageSDKManager shared] setupWithConfig:config delegate:self];
 }
